@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+      "target": "https://cdn-api.co-vin.in",
+      "secure": false,
+      "logLevel": "debug"
+  }
+}
