@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  cowin : "https://api.demo.co-vin.in/api/v2"
+  cowin : "https://cdn-api.co-vin.in/api/v2"
 
 };

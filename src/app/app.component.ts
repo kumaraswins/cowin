@@ -23,9 +23,13 @@ export class AppComponent {
   mobile = ""
   otp = ''
   txnId = ''
+  showCancel = false;
+  disableMobile = false;
+  disableOtp = true;
+  refreshTime  = 5 //seconds
 
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
-    this.date = new Date();
+    //this.date = new Date();
    }
   /**
    *
@@ -36,7 +40,7 @@ export class AppComponent {
       this.stateList =  data['states']
     })
     this.vaccineType ="COVAXIN"
-    this.date = new Date();
+    //this.date = new Date();
   }
   /**
    *
@@ -58,28 +62,41 @@ export class AppComponent {
   }
   /**
    *
+   */
+  refreshData() {
+     setInterval(() => {
+        console.log('setTimeOut');
+        this.getHospitalData()
+    }, this.refreshTime * 1000);
+  }
+
+  /**
+   *
    * @param value
    */
   getHospitalData(): void{
     if (this.selectedState == '' && this.selectedDistrict == '') return;
     this.api.getDistrictData(this.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
       this.listOfData = this.ui.generateTable(data,  this.listOfData, this.ageGroup, this.vaccineType, this.vaccineFee);
-    })
+    });
+    //this.refreshData()
 
   }
   sendOtp(){
+    this.disableMobile = true;
+    this.disableOtp = false;
     this.api.getOtp(this.mobile).subscribe(data => {
       this.txnId = data['txnId'];
     })
   }
 
   validateOtp(){
+
     this.api.validateOtp(this.otp, this.txnId).subscribe(data => {
-      console.log(data)
+      localStorage.setItem("token", data['token']);
     })
   }
-
-  selectAge(){
-    this.getHospitalData()
+  cancelLogin(){
+    localStorage.clear()
   }
 }

@@ -14,9 +14,9 @@
   </div>
 
   <form>
+
     <div class="row">
       <div class="col-4">
-        <h4>Login</h4>
         <div class="input-group mb-3">
           <input
             type="number"
@@ -24,6 +24,7 @@
             placeholder="Recipient's Mobile"
             name="mobile"
             [(ngModel)]="mobile"
+            [disabled]="disableMobile"
             aria-label="Phone number"
             aria-describedby="basic-addon2"
           />
@@ -31,12 +32,15 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
+              [disabled]="disableMobile"
               (click)="sendOtp()"
             >
               Login
             </button>
           </div>
         </div>
+      </div>
+      <div class="col-4">
 
         <div class="input-group mb-3">
           <input
@@ -45,6 +49,7 @@
             placeholder="OTP"
             name="otp"
             [(ngModel)]="otp"
+            [disabled]="disableOtp"
             aria-label="otp"
             aria-describedby="basic-addon2"
           />
@@ -52,12 +57,24 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
-              (click)="validateOtp()"
+              [disabled]="disableOtp"
+              (click)="validateOtp();disableOtp=true;showCancel=true"
             >
               Validate Otp
             </button>
           </div>
+
         </div>
+      </div>
+      <div class="col-4">
+        <button
+          class="btn btn-warning"
+          type="button"
+          *ngIf="showCancel"
+          (click)="cancelLogin();disableMobile=false;disableOtp=true"
+        >
+         Cancel
+        </button>
       </div>
     </div>
     <hr />
@@ -281,7 +298,9 @@
             {{ d.district_name }}
           </option>
         </select>
+
       </div>
+
     </div>
   </form>
   <br>
