@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cowin-angular": {
+    "cowin": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cowin-angular",
+            "outputPath": "dist/cowin",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -47,13 +47,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "6mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 }
               ]
             }
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "cowin-angular:build"
+            "browserTarget": "cowin:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "cowin-angular:build:production"
+              "browserTarget": "cowin:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cowin-angular:build"
+            "browserTarget": "cowin:build"
           }
         },
         "test": {
@@ -110,16 +110,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "cowin-angular:serve"
+            "devServerTarget": "cowin:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "cowin-angular:serve:production"
+              "devServerTarget": "cowin:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "cowin-angular"
+  "defaultProject": "cowin"
 }

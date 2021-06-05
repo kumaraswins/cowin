@@ -27,9 +27,26 @@ export class AppComponent {
   disableMobile = false;
   disableOtp = true;
   refreshTime  = 5 //seconds
+  isRefresh = false;
 
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
-    //this.date = new Date();
+
+   }
+   loadDefautltData(){
+     let mobile = localStorage.getItem("mobile")
+     if (mobile){
+      this.mobile = mobile;
+     }
+
+     if(localStorage.getItem("vaccineType")){
+        this.vaccineType = localStorage.getItem("vaccineType")
+      }
+
+     if(localStorage.getItem("ageGroup"))
+        this.ageGroup = localStorage.getItem("ageGroup")
+
+      if(localStorage.getItem("dose"))
+        this.dose = localStorage.getItem("dose")
    }
   /**
    *
@@ -37,19 +54,27 @@ export class AppComponent {
   ngOnInit() {
     this.api.getStates()
     .subscribe(data => {
-      this.stateList =  data['states']
+      this.stateList =  data['states'];
+      if(localStorage.getItem("selectedState")){
+        console.log()
+        this.selectedState = localStorage.getItem("selectedState")
+      }
     })
     this.vaccineType ="COVAXIN"
-    //this.date = new Date();
+    this.loadDefautltData()
   }
   /**
    *
    * @param value
    */
-  onChangeState(value:string): void{
+  onChangeState(): void{
     this.districtData = [];
     this.api.getDistricts(this.selectedState).subscribe(data => {
-      this.districtData = data['districts']
+      this.districtData = data['districts'];
+      if(localStorage.getItem("selectedState")){
+        this.selectedDistrict = localStorage.getItem("selected")
+      }
+      localStorage.setItem("selectedState",this.selectedState);
     })
   }
 
@@ -64,18 +89,29 @@ export class AppComponent {
    *
    */
   refreshData() {
+    localStorage.setItem("selectedDistrict",this.selectedDistrict);
      setInterval(() => {
         console.log('setTimeOut');
-        this.getHospitalData()
+        if (this.isRefresh)
+          this.getHospitalData()
     }, this.refreshTime * 1000);
   }
-
+  /**
+   *
+   */
+  setData(){
+    localStorage.setItem("vaccineType",this.vaccineType)
+    localStorage.setItem("ageGroup", this.ageGroup)
+    localStorage.setItem("dose", this.dose)
+  }
   /**
    *
    * @param value
    */
   getHospitalData(): void{
+    this.setData()
     if (this.selectedState == '' && this.selectedDistrict == '') return;
+    this.isRefresh =true;
     this.api.getDistrictData(this.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
       this.listOfData = this.ui.generateTable(data,  this.listOfData, this.ageGroup, this.vaccineType, this.vaccineFee);
     });
@@ -87,16 +123,25 @@ export class AppComponent {
     this.disableOtp = false;
     this.api.getOtp(this.mobile).subscribe(data => {
       this.txnId = data['txnId'];
+      localStorage.setItem("mobile",this.mobile)
     })
   }
 
   validateOtp(){
-
-    this.api.validateOtp(this.otp, this.txnId).subscribe(data => {
-      localStorage.setItem("token", data['token']);
-    })
+    this.api.getHash(this.otp)
+      .then(hash => {
+        this.api.validateOtp(hash, this.txnId).subscribe(data => {
+          localStorage.setItem("token", data['token']);
+        })
+      });
   }
   cancelLogin(){
+    this.showCancel = false;
+    this.disableMobile = false;
+    this.disableOtp = true;
     localStorage.clear()
+  }
+  stopRefresh(){
+    this.isRefresh = false;
   }
 }

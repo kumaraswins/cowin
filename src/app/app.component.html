@@ -32,7 +32,7 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
-              [disabled]="disableMobile"
+              [disabled]="mobile == ''"
               (click)="sendOtp()"
             >
               Login
@@ -57,7 +57,7 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
-              [disabled]="disableOtp"
+              [disabled]="mobile == ''"
               (click)="validateOtp();disableOtp=true;showCancel=true"
             >
               Validate Otp
@@ -261,6 +261,7 @@
             type="date"
             name="date"
             id="date"
+            (change)="getHospitalData()"
             [(ngModel)]="date"
           />
         </div>
@@ -275,7 +276,7 @@
           id="states"
           [(ngModel)]="selectedState"
           name="states"
-          (change)="onChangeState($event.target.value)"
+          (change)="onChangeState()"
         >
           <option value="">Select</option>
           <option *ngFor="let x of stateList" [ngValue]="x.state_id">
@@ -291,14 +292,22 @@
           [(ngModel)]="selectedDistrict"
           id="district"
           name="districts"
-          (change)="getHospitalData()"
+          (change)="getHospitalData();refreshData()"
         >
           <option value="">Select</option>
           <option *ngFor="let d of districtData" [ngValue]="d.district_id">
             {{ d.district_name }}
           </option>
         </select>
-
+      </div>
+      <div class="col-4">
+        <button
+              class="btn btn-secondary"
+              type="button"
+              (click)="stopRefresh()"
+            >
+              Stop Search
+            </button>
       </div>
 
     </div>

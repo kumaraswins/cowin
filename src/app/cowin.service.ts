@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {HelperService} from './helper.service'
 import {environment} from '../environments/environment'
-import { sha256, sha224 } from 'js-sha256';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +23,23 @@ export class CowinService {
     return this.http.get(environment.cowin + url, { headers: this.helperService.getHeaders()})
   }
 
-  encrpt(otp:string){
-    return sha256(otp.toString());
+   getHash(str:string) {
+    let strBuf = new TextEncoder().encode(str);
+    return crypto.subtle.digest("SHA-256", strBuf)
+      .then(hash => {
+        let result = '';
+        const view = new DataView(hash);
+        for (let i = 0; i < hash.byteLength; i += 4) {
+          result += ('00000000' + view.getUint32(i).toString(16)).slice(-8);
+        }
+        return result;
+      });
   }
 
-
+  /**
+   *
+   * @returns
+   */
   getStates():  Observable<any>{
     return this.http.get(this.STATES, { headers: this.helperService.getHeaders()})
   }
@@ -46,9 +57,10 @@ export class CowinService {
 
   validateOtp(otp:string, txn:string):  Observable<any>{
     let json = {}
-    json["otp"]=  this.encrpt(otp)
+    json["otp"]=  otp
     json['txnId'] = txn
     return this.http.post( this.VALIDATE_OTP, json, { headers: this.helperService.getHeaders()})
+
   }
 
 
