@@ -19,19 +19,26 @@ export class AppComponent {
   vaccineFee = "Free";
   dose = "dose1";
   date = new Date();
-  listOfData = []
+  listOfData = [];
+  benificiaryList = [];
+  selectedbeneficiary = []
   mobile = ""
   otp = ''
   txnId = ''
   showCancel = false;
   disableMobile = false;
   disableOtp = true;
-  refreshTime  = 5 //seconds
+  refreshTime  = 5
   isRefresh = false;
+  showLoader = false;
+  loaderText = "";
 
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
 
    }
+   /**
+    *
+    */
    loadDefautltData(){
      let mobile = localStorage.getItem("mobile")
      if (mobile){
@@ -59,6 +66,9 @@ export class AppComponent {
         console.log()
         this.selectedState = localStorage.getItem("selectedState")
       }
+      if(localStorage.getItem("token")){
+        this.beneficiary()
+      }
     })
     this.vaccineType ="COVAXIN"
     this.loadDefautltData()
@@ -77,7 +87,10 @@ export class AppComponent {
       localStorage.setItem("selectedState",this.selectedState);
     })
   }
-
+  /**
+   *
+   * @param value
+   */
   getDistrictsSessions(value:string){
     this.api.getDistrictData(value, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
       this.listOfData = [];
@@ -104,6 +117,23 @@ export class AppComponent {
     localStorage.setItem("ageGroup", this.ageGroup)
     localStorage.setItem("dose", this.dose)
   }
+  /** */
+  beneficiary(){
+    this.benificiaryList = [];
+    this.api.benificary().subscribe(data => {
+      console.log(data['status'])
+      if(data.status == 200){;
+        let benificaries = data.body['beneficiaries']
+        for (let i=0;i < benificaries.length ;i++){
+          benificaries[i]['enable'] = true;
+        }
+        this.benificiaryList =  benificaries;
+      } else if(data.status == 400 || data.status == 401){
+        console.log("Expired")
+      }
+    })
+  }
+
   /**
    *
    * @param value
@@ -118,7 +148,12 @@ export class AppComponent {
     //this.refreshData()
 
   }
+  /**
+   *
+   */
   sendOtp(){
+    this.showLoader = true;
+    this.loaderText = "Enter OTP ... "
     this.disableMobile = true;
     this.disableOtp = false;
     this.api.getOtp(this.mobile).subscribe(data => {
@@ -126,22 +161,38 @@ export class AppComponent {
       localStorage.setItem("mobile",this.mobile)
     })
   }
-
+  /**
+   *
+   */
   validateOtp(){
     this.api.getHash(this.otp)
-      .then(hash => {
-        this.api.validateOtp(hash, this.txnId).subscribe(data => {
+      .then(hashedOtp => {
+        this.api.validateOtp(hashedOtp, this.txnId).subscribe(data => {
           localStorage.setItem("token", data['token']);
+          this.beneficiary();
+          this.showLoader = false;
+          this.loaderText = ""
         })
       });
   }
+  /**
+   *
+   */
   cancelLogin(){
     this.showCancel = false;
     this.disableMobile = false;
     this.disableOtp = true;
     localStorage.clear()
   }
+  /**
+   *
+   */
   stopRefresh(){
     this.isRefresh = false;
+  }
+  changeBeneficiiary(ben:any){
+    for (let entry of this.benificiaryList) {
+      console.log( this.benificiaryList)
+    }
   }
 }

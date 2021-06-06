@@ -12,11 +12,17 @@
       <br /><br />
     </div>
   </div>
-
+  <div *ngIf="showLoader">
+    {{loaderText}}
+    <div class="spinner-border text-secondary" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
   <form>
 
     <div class="row">
       <div class="col-4">
+
         <div class="input-group mb-3">
           <input
             type="number"
@@ -58,8 +64,7 @@
               class="btn btn-outline-secondary"
               type="button"
               [disabled]="mobile == ''"
-              (click)="validateOtp();disableOtp=true;showCancel=true"
-            >
+              (click)="validateOtp();showCancel=true">
               Validate Otp
             </button>
           </div>
@@ -67,17 +72,36 @@
         </div>
       </div>
       <div class="col-4">
+      <button
+          class="btn btn-success"
+          type="button"
+
+          (click)="disableOtp=false;sendOtp()">
+         Resent OTP
+        </button>
+
         <button
           class="btn btn-warning"
           type="button"
           *ngIf="showCancel"
-          (click)="cancelLogin();disableMobile=false;disableOtp=true"
-        >
+          (click)="cancelLogin();disableMobile=false;disableOtp=true">
          Cancel
         </button>
+
       </div>
     </div>
     <hr />
+    <div class="row">
+      <div class="col-5">
+
+        <div class="form-check"  *ngFor="let beneficiary of benificiaryList; let i = index">
+          <input type="checkbox" [checked]="beneficiary.enable" class="form-check-input"  (change)="changeBeneficiiary(beneficiary);beneficiary.enable=!beneficiary.enable">
+          <label class="form-check-label" >{{beneficiary.name}} is {{beneficiary.vaccination_status}}</label>
+        </div>
+
+
+      </div>
+    </div>
     <h5>Users Preference</h5>
     <hr />
     <!--
@@ -304,8 +328,7 @@
         <button
               class="btn btn-secondary"
               type="button"
-              (click)="stopRefresh()"
-            >
+              (click)="stopRefresh()">
               Stop Search
             </button>
       </div>

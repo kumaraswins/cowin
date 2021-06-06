@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import {HelperService} from './helper.service'
 import {environment} from '../environments/environment'
 
@@ -15,6 +15,7 @@ export class CowinService {
   STATES = environment.cowin +  '/admin/location/states'
   DISTRICTS = environment.cowin + '/admin/location/districts/'
   VALIDATE_OTP = environment.cowin + '/auth/validateMobileOtp'
+  BENFICIARY = environment.cowin +  '/appointment/beneficiaries';
 
   constructor(private http: HttpClient, private helperService: HelperService) { }
 
@@ -63,6 +64,14 @@ export class CowinService {
 
   }
 
+  benificary1():  Observable<any>{
+    return this.http.get( this.BENFICIARY, { headers: this.helperService.getAuthHeaders()})
 
+  }
+  benificary(): Observable<HttpResponse<any>> {
+    return this.http.get<any>(
+      this.BENFICIARY,
+       { headers: this.helperService.getAuthHeaders(),observe: 'response' });
+  }
 
 }

@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //cowin : "https://cdn-api.co-vin.in/api/v2",
-  cowin : "https://cdndemo-api.co-vin.in/api/v2"
+  cowin : "https://cdn-api.co-vin.in/api/v2"
 };
 
 /*
