@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable,throwError } from 'rxjs';
+import { HttpClient, HttpResponse,HttpErrorResponse } from '@angular/common/http';
 import {HelperService} from './helper.service'
 import {environment} from '../environments/environment'
+import { retry, catchError } from 'rxjs/operators';
+//import 'rxjs/add/operator/catch'; // don't forget this, or you'll get a runtime error
 
 @Injectable({
   providedIn: 'root'
@@ -42,36 +44,30 @@ export class CowinService {
    * @returns
    */
   getStates():  Observable<any>{
-    return this.http.get(this.STATES, { headers: this.helperService.getHeaders()})
+    return this.http.get(this.STATES)
   }
 
   getDistricts(id:string):  Observable<any>{
-    return this.http.get(this.DISTRICTS+id, { headers: this.helperService.getHeaders()})
+    return this.http.get(this.DISTRICTS+id)
   }
 
   getOtp(number:string):  Observable<any>{
     let json = {}
     json["mobile"]=  number
     json['secret'] = this.SECRET
-    return this.http.post( this.SEND_OTP,json, { headers: this.helperService.getHeaders()})
+    return this.http.post( this.SEND_OTP,json)
   }
 
   validateOtp(otp:string, txn:string):  Observable<any>{
     let json = {}
     json["otp"]=  otp
     json['txnId'] = txn
-    return this.http.post( this.VALIDATE_OTP, json, { headers: this.helperService.getHeaders()})
+    return this.http.post( this.VALIDATE_OTP, json)
 
   }
 
-  benificary1():  Observable<any>{
-    return this.http.get( this.BENFICIARY, { headers: this.helperService.getAuthHeaders()})
+  benificary():  Observable<any>{
+    return this.http.get( this.BENFICIARY)
 
   }
-  benificary(): Observable<HttpResponse<any>> {
-    return this.http.get<any>(
-      this.BENFICIARY,
-       { headers: this.helperService.getAuthHeaders(),observe: 'response' });
-  }
-
 }

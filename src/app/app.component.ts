@@ -16,8 +16,8 @@ export class AppComponent {
   districtData = [];
   vaccineType = "COVAXIN";
   ageGroup = "18";
-  vaccineFee = "Free";
-  dose = "dose1";
+  vaccineFee = "Any";
+  dose = "dose2";
   date = new Date();
   listOfData = [];
   benificiaryList = [];
@@ -59,11 +59,12 @@ export class AppComponent {
    *
    */
   ngOnInit() {
+
     this.api.getStates()
     .subscribe(data => {
+      localStorage.setItem("states", data);
       this.stateList =  data['states'];
       if(localStorage.getItem("selectedState")){
-        console.log()
         this.selectedState = localStorage.getItem("selectedState")
       }
       if(localStorage.getItem("token")){
@@ -80,9 +81,10 @@ export class AppComponent {
   onChangeState(): void{
     this.districtData = [];
     this.api.getDistricts(this.selectedState).subscribe(data => {
+      localStorage.setItem("districts",data);
       this.districtData = data['districts'];
       if(localStorage.getItem("selectedState")){
-        this.selectedDistrict = localStorage.getItem("selected")
+        this.selectedDistrict = localStorage.getItem("selectedState")
       }
       localStorage.setItem("selectedState",this.selectedState);
     })
@@ -121,16 +123,14 @@ export class AppComponent {
   beneficiary(){
     this.benificiaryList = [];
     this.api.benificary().subscribe(data => {
-      console.log(data['status'])
-      if(data.status == 200){;
-        let benificaries = data.body['beneficiaries']
+
+
+        let benificaries = data['beneficiaries']
         for (let i=0;i < benificaries.length ;i++){
           benificaries[i]['enable'] = true;
         }
         this.benificiaryList =  benificaries;
-      } else if(data.status == 400 || data.status == 401){
-        console.log("Expired")
-      }
+
     })
   }
 
@@ -143,8 +143,10 @@ export class AppComponent {
     if (this.selectedState == '' && this.selectedDistrict == '') return;
     this.isRefresh =true;
     this.api.getDistrictData(this.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
+      localStorage.setItem("selectedDistrict", this.selectedDistrict)
       this.listOfData = this.ui.generateTable(data,  this.listOfData, this.ageGroup, this.vaccineType, this.vaccineFee);
     });
+
     //this.refreshData()
 
   }
