@@ -1,5 +1,5 @@
 import { UiHelperService } from './ui-helper.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CowinService } from './cowin.service';
 import {HelperService} from './helper.service'
 
@@ -9,29 +9,32 @@ import {HelperService} from './helper.service'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  //title = 'cowin-angular';
-  selectedState = ""
-  selectedDistrict = ""
-  stateList = [];
-  districtData = [];
-  vaccineType = "COVAXIN";
-  ageGroup = "18";
-  vaccineFee = "Any";
-  dose = "dose2";
-  date = new Date();
-  listOfData = [];
-  benificiaryList = [];
-  selectedbeneficiary = []
-  mobile = ""
-  otp = ''
-  txnId = ''
-  showCancel = false;
-  disableMobile = false;
-  disableOtp = true;
-  refreshTime  = 5
-  isRefresh = false;
-  showLoader = false;
-  loaderText = "";
+  model = {
+    "selectedState" :"",
+    "selectedDistrict":"",
+    "stateList":[],
+    "districtData":[],
+    "benificiaryList":[],
+    "vaccineType":"COVAXIN",
+    "ageGroup":"18",
+    "vaccineFee":"Any",
+    "dose":"dose1",
+    "mobile":"",
+    "otp":"",
+    "availability":"0",
+    "date":new Date(),
+    "txnId":""
+  }
+  view = {
+    "listOfData":[],
+    "showCancel" : false,
+    "disableMobile" : false,
+    "disableOtp" : true,
+    "refreshTime"  : 5,
+    "isRefresh" : false,
+    "showLoader" : false,
+    "loaderText" : ""
+  }
 
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
 
@@ -42,18 +45,18 @@ export class AppComponent {
    loadDefautltData(){
      let mobile = localStorage.getItem("mobile")
      if (mobile){
-      this.mobile = mobile;
+      this.model.mobile = mobile;
      }
 
      if(localStorage.getItem("vaccineType")){
-        this.vaccineType = localStorage.getItem("vaccineType")
+        this.model.vaccineType = localStorage.getItem("vaccineType")
       }
 
      if(localStorage.getItem("ageGroup"))
-        this.ageGroup = localStorage.getItem("ageGroup")
+        this.model.ageGroup = localStorage.getItem("ageGroup")
 
       if(localStorage.getItem("dose"))
-        this.dose = localStorage.getItem("dose")
+        this.model.dose = localStorage.getItem("dose")
    }
   /**
    *
@@ -62,16 +65,11 @@ export class AppComponent {
 
     this.api.getStates()
     .subscribe(data => {
-      localStorage.setItem("states", data);
-      this.stateList =  data['states'];
-      if(localStorage.getItem("selectedState")){
-        this.selectedState = localStorage.getItem("selectedState")
-      }
-      if(localStorage.getItem("token")){
-        this.beneficiary()
-      }
+
+      this.model.stateList =  data['states'];
+
     })
-    this.vaccineType ="COVAXIN"
+    this.model.vaccineType ="COVAXIN"
     this.loadDefautltData()
   }
   /**
@@ -79,14 +77,12 @@ export class AppComponent {
    * @param value
    */
   onChangeState(): void{
-    this.districtData = [];
-    this.api.getDistricts(this.selectedState).subscribe(data => {
-      localStorage.setItem("districts",data);
-      this.districtData = data['districts'];
-      if(localStorage.getItem("selectedState")){
-        this.selectedDistrict = localStorage.getItem("selectedState")
-      }
-      localStorage.setItem("selectedState",this.selectedState);
+    this.model.districtData = [];
+    this.api.getDistricts(this.model.selectedState).subscribe(data => {
+
+      this.model.districtData = data['districts'];
+
+      localStorage.setItem("selectedState",this.model.selectedState);
     })
   }
   /**
@@ -94,8 +90,8 @@ export class AppComponent {
    * @param value
    */
   getDistrictsSessions(value:string){
-    this.api.getDistrictData(value, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
-      this.listOfData = [];
+    this.api.getDistrictData(value, this.helper.getMMDDYYYY_calendar(this.model.date)).subscribe(data => {
+      this.view.listOfData = [];
       //this.ui.generateTable(data,  this.listOfData, this.ageGroup);
     })
 
@@ -104,24 +100,24 @@ export class AppComponent {
    *
    */
   refreshData() {
-    localStorage.setItem("selectedDistrict",this.selectedDistrict);
+    localStorage.setItem("selectedDistrict",this.model.selectedDistrict);
      setInterval(() => {
         console.log('setTimeOut');
-        if (this.isRefresh)
+        //if (this.view.isRefresh)
           this.getHospitalData()
-    }, this.refreshTime * 1000);
+    }, this.view.refreshTime * 1000);
   }
   /**
    *
    */
   setData(){
-    localStorage.setItem("vaccineType",this.vaccineType)
-    localStorage.setItem("ageGroup", this.ageGroup)
-    localStorage.setItem("dose", this.dose)
+    localStorage.setItem("vaccineType",this.model.vaccineType)
+    localStorage.setItem("ageGroup", this.model.ageGroup)
+    localStorage.setItem("dose", this.model.dose)
   }
   /** */
   beneficiary(){
-    this.benificiaryList = [];
+    this.model.benificiaryList = [];
     this.api.benificary().subscribe(data => {
 
 
@@ -129,7 +125,7 @@ export class AppComponent {
         for (let i=0;i < benificaries.length ;i++){
           benificaries[i]['enable'] = true;
         }
-        this.benificiaryList =  benificaries;
+        this.model.benificiaryList =  benificaries;
 
     })
   }
@@ -140,11 +136,12 @@ export class AppComponent {
    */
   getHospitalData(): void{
     this.setData()
-    if (this.selectedState == '' && this.selectedDistrict == '') return;
-    this.isRefresh =true;
-    this.api.getDistrictData(this.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.date)).subscribe(data => {
-      localStorage.setItem("selectedDistrict", this.selectedDistrict)
-      this.listOfData = this.ui.generateTable(data,  this.listOfData, this.ageGroup, this.vaccineType, this.vaccineFee);
+    if (this.model.selectedState == '' && this.model.selectedDistrict == '') return;
+    this.view.isRefresh =true;
+    this.api.getDistrictData(this.model.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.model.date)).subscribe(data => {
+      localStorage.setItem("selectedDistrict", this.model.selectedDistrict)
+      this.view.listOfData = this.ui.generateTable(data,  this.view.listOfData, this.model.ageGroup, this.model.vaccineType, this.model.vaccineFee, this.model.availability);
+      console.log(this.view.listOfData)
     });
 
     //this.refreshData()
@@ -154,26 +151,26 @@ export class AppComponent {
    *
    */
   sendOtp(){
-    this.showLoader = true;
-    this.loaderText = "Enter OTP ... "
-    this.disableMobile = true;
-    this.disableOtp = false;
-    this.api.getOtp(this.mobile).subscribe(data => {
-      this.txnId = data['txnId'];
-      localStorage.setItem("mobile",this.mobile)
+    this.view.showLoader = true;
+    this.view.loaderText = "Enter OTP ... "
+    this.view.disableMobile = true;
+    this.view.disableOtp = false;
+    this.api.getOtp(this.model.mobile).subscribe(data => {
+      this.model.txnId = data['txnId'];
+      localStorage.setItem("mobile",this.model.mobile)
     })
   }
   /**
    *
    */
   validateOtp(){
-    this.api.getHash(this.otp)
+    this.api.getHash(this.model.otp)
       .then(hashedOtp => {
-        this.api.validateOtp(hashedOtp, this.txnId).subscribe(data => {
+        this.api.validateOtp(hashedOtp, this.model.txnId).subscribe(data => {
           localStorage.setItem("token", data['token']);
           this.beneficiary();
-          this.showLoader = false;
-          this.loaderText = ""
+          this.view.showLoader = false;
+          this.view.loaderText = ""
         })
       });
   }
@@ -181,20 +178,20 @@ export class AppComponent {
    *
    */
   cancelLogin(){
-    this.showCancel = false;
-    this.disableMobile = false;
-    this.disableOtp = true;
+    this.view.showCancel = false;
+    this.view.disableMobile = false;
+    this.view.disableOtp = true;
     localStorage.clear()
   }
   /**
    *
    */
   stopRefresh(){
-    this.isRefresh = false;
+    this.view.isRefresh = false;
   }
   changeBeneficiiary(ben:any){
-    for (let entry of this.benificiaryList) {
-      console.log( this.benificiaryList)
+    for (let entry of this.model.benificiaryList) {
+      console.log( this.model.benificiaryList)
     }
   }
 }

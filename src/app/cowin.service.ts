@@ -3,7 +3,8 @@ import { Observable,throwError } from 'rxjs';
 import { HttpClient, HttpResponse,HttpErrorResponse } from '@angular/common/http';
 import {HelperService} from './helper.service'
 import {environment} from '../environments/environment'
-import { retry, catchError } from 'rxjs/operators';
+import { CenterList } from './centers';
+import { States, District } from './state';
 //import 'rxjs/add/operator/catch'; // don't forget this, or you'll get a runtime error
 
 @Injectable({
@@ -21,9 +22,9 @@ export class CowinService {
 
   constructor(private http: HttpClient, private helperService: HelperService) { }
 
-  getDistrictData(value:string, date:string):  Observable<any>{
+  getDistrictData(value:string, date:string):  Observable<CenterList>{
     let url = '/appointment/sessions/public/calendarByDistrict?district_id='+value+'&date='+ date
-    return this.http.get(environment.cowin + url, { headers: this.helperService.getHeaders()})
+    return this.http.get<CenterList>(environment.cowin + url, { headers: this.helperService.getHeaders()})
   }
 
    getHash(str:string) {
@@ -43,12 +44,12 @@ export class CowinService {
    *
    * @returns
    */
-  getStates():  Observable<any>{
-    return this.http.get(this.STATES)
+  getStates():  Observable<States>{
+    return this.http.get<States>(this.STATES)
   }
 
-  getDistricts(id:string):  Observable<any>{
-    return this.http.get(this.DISTRICTS+id)
+  getDistricts(id:string):  Observable<District>{
+    return this.http.get<District>(this.DISTRICTS+id)
   }
 
   getOtp(number:string):  Observable<any>{

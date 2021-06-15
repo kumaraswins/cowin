@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StringLiteralType } from 'typescript';
 
 @Injectable({
   providedIn: 'root'
@@ -19,27 +20,34 @@ export class UiHelperService {
     return json
   }
 
-  generateTable(data:any, listOfData:any, age:string, vaccineType:string, fee:string){
+  formData(vaccineType,sessions,centers, listOfData,json,age,fee,j){
+    if (vaccineType == "any"
+              && sessions[j]['min_age_limit'] == parseInt(age) && fee == centers['fee_type']){
+            json = this.generteData(centers, sessions, j)
+            listOfData.push(json)
+          }
+          else if (sessions[j]['min_age_limit'] == parseInt(age)
+            && vaccineType == sessions[j]['vaccine'] && fee == centers['fee_type']){
+            json = this.generteData(centers, sessions, j)
+            listOfData.push(json)
+          }
+          else if (sessions[j]['min_age_limit'] == parseInt(age)
+          && vaccineType == sessions[j]['vaccine'] && fee == "Any"){
+            json = this.generteData(centers, sessions, j)
+            listOfData.push(json)
+          }
+  }
+
+  generateTable(data:any, listOfData:any, age:string, vaccineType:string, fee:string, availabilty:string){
     listOfData = [];
     for (let i=0;i < data['centers'].length;i++){
       let centers  = data['centers'][i];
       let sessions  = data['centers'][i]['sessions'];
       for (let j=0;j<sessions.length;j++){
         let json = {};
-        if (vaccineType == "any"
-            && sessions[j]['min_age_limit'] == parseInt(age) && fee == centers['fee_type']){
-           json = this.generteData(centers, sessions, j)
-           listOfData.push(json)
+        if( sessions[j]["available_capacity"] >1){
+          this.formData(vaccineType, sessions,centers,listOfData,json,age,fee,j)
         }
-         else if (sessions[j]['min_age_limit'] == parseInt(age)
-          && vaccineType == sessions[j]['vaccine'] && fee == centers['fee_type']){
-           json = this.generteData(centers, sessions, j)
-           listOfData.push(json)
-         } else if (sessions[j]['min_age_limit'] == parseInt(age)
-         && vaccineType == sessions[j]['vaccine'] && fee == "Any"){
-          json = this.generteData(centers, sessions, j)
-          listOfData.push(json)
-         }
       }
     }
     return listOfData

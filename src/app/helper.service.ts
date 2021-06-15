@@ -13,9 +13,6 @@ export class HelperService {
     const headers= new HttpHeaders()
     .set('content-type', 'application/json')
     .set('Authorization', 'Bearer ' + localStorage.getItem('token'))
-    //.set('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')
-    //.set('Access-Control-Allow-Origin', '*')
-    //.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE, PATCH');
     return headers;
   }
   getHeaders(){
@@ -30,7 +27,8 @@ export class HelperService {
     let today = new Date();
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
+    let yyyy = today.getFullYear()
+
     return mm + '-' + dd + '-' + yyyy;
   }
 
@@ -39,7 +37,7 @@ export class HelperService {
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
     let yyyy = today.getFullYear();
-    return mm + '-' + dd + '-' + yyyy;
+    return dd + '-' + mm + '-' + yyyy;
   }
 
 

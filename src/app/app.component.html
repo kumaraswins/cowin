@@ -12,7 +12,7 @@
       <br /><br />
     </div>
   </div>
-  <div *ngIf="showLoader">
+  <div *ngIf="view.showLoader">
     {{loaderText}}
     <div class="spinner-border text-secondary" role="status">
       <span class="sr-only"></span>
@@ -23,7 +23,7 @@
     <div class="row">
       <div class="col-5">
 
-        <div class="form-check"  *ngFor="let beneficiary of benificiaryList; let i = index">
+        <div class="form-check"  *ngFor="let beneficiary of model.benificiaryList; let i = index">
           <input type="checkbox" [checked]="beneficiary.enable" class="form-check-input"  (change)="changeBeneficiiary(beneficiary);beneficiary.enable=!beneficiary.enable">
           <label class="form-check-label" >{{beneficiary.name}} is {{beneficiary.vaccination_status}}</label>
         </div>
@@ -46,7 +46,7 @@
             id="covaxin"
             value="COVAXIN"
             (click)="getHospitalData()"
-            [(ngModel)]="vaccineType"
+            [(ngModel)]="model.vaccineType"
           />
           <label class="form-check-label" for="inlineRadio1">COVAXIN</label>
         </div>
@@ -59,7 +59,7 @@
             id="covishield"
             value="COVISHIELD"
             (click)="getHospitalData()"
-            [(ngModel)]="vaccineType"
+            [(ngModel)]="model.vaccineType"
           />
           <label class="form-check-label" for="inlineRadio2">COVISHIELD</label>
         </div>
@@ -72,7 +72,7 @@
             id="sputnik"
             value="SPUTNIK"
             (click)="getHospitalData()"
-            [(ngModel)]="vaccineType"
+            [(ngModel)]="model.vaccineType"
           />
           <label class="form-check-label" for="inlineRadio3">SPUTNIK</label>
         </div>
@@ -84,12 +84,49 @@
             id="any"
             value="any"
             (click)="getHospitalData()"
-            [(ngModel)]="vaccineType"
+            [(ngModel)]="model.vaccineType"
           />
           <label class="form-check-label" for="inlineRadio3">Any </label>
         </div>
       </div>
     </div>
+    <br />
+    <!-- Availability 0/any-->
+    <div class="row">
+      <div class="col-8">
+
+
+
+        <div class="form-check form-check-inline">
+          <b>Availability</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="availability"
+            id="availabilityany"
+            value="0"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.availability"
+          />
+          <label class="form-check-label" for="availability">Any </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="availability"
+            id="availabile"
+            value="1"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.availability"
+          />
+          <label class="form-check-label" for="availability">Available </label>
+        </div>
+
+      </div>
+    </div>
+
     <br />
     <!--
         Age group
@@ -104,7 +141,7 @@
             name="age"
             id="age18"
             value="18"
-            [(ngModel)]="ageGroup"
+            [(ngModel)]="model.ageGroup"
             (click)="getHospitalData()"
           />
           <label class="form-check-label" for="inlineRadio1">18</label>
@@ -117,7 +154,7 @@
             name="age"
             id="age45"
             value="45"
-            [(ngModel)]="ageGroup"
+            [(ngModel)]="model.ageGroup"
             (click)="getHospitalData()"
           />
           <label class="form-check-label" for="inlineRadio2">45</label>
@@ -139,7 +176,7 @@
             id="free"
             (click)="getHospitalData()"
             value="Free"
-            [(ngModel)]="vaccineFee"
+            [(ngModel)]="model.vaccineFee"
           />
           <label class="form-check-label" for="free">Free</label>
         </div>
@@ -152,7 +189,7 @@
             id="paid"
             (click)="getHospitalData()"
             value="Paid"
-            [(ngModel)]="vaccineFee"
+            [(ngModel)]="model.vaccineFee"
           />
           <label class="form-check-label" for="paid">Paid</label>
         </div>
@@ -165,7 +202,7 @@
             id="any"
             (click)="getHospitalData()"
             value="Any"
-            [(ngModel)]="vaccineFee"
+            [(ngModel)]="model.vaccineFee"
           />
           <label class="form-check-label" for="any">Any</label>
         </div>
@@ -184,7 +221,7 @@
             name="dose"
             id="dose1"
             value="dose1"
-            [(ngModel)]="dose"
+            [(ngModel)]="model.dose"
           />
           <label class="form-check-label" for="inlineRadio1">Dose1</label>
         </div>
@@ -196,7 +233,7 @@
             name="dose"
             id="dose2"
             value="dose2"
-            [(ngModel)]="dose"
+            [(ngModel)]="model.dose"
           />
           <label class="form-check-label" for="inlineRadio2">Dose2</label>
         </div>
@@ -214,7 +251,7 @@
             name="date"
             id="date"
             (change)="getHospitalData()"
-            [(ngModel)]="date"
+            [(ngModel)]="model.date"
           />
         </div>
       </div>
@@ -230,8 +267,8 @@
             class="form-control"
             placeholder="Recipient's Mobile"
             name="mobile"
-            [(ngModel)]="mobile"
-            [disabled]="disableMobile"
+            [(ngModel)]="model.mobile"
+            [disabled]="view.disableMobile"
             aria-label="Phone number"
             aria-describedby="basic-addon2"
           />
@@ -239,7 +276,7 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
-              [disabled]="mobile == ''"
+              [disabled]="model.mobile == ''"
               (click)="sendOtp()"
             >
               Login
@@ -255,8 +292,8 @@
             class="form-control"
             placeholder="OTP"
             name="otp"
-            [(ngModel)]="otp"
-            [disabled]="disableOtp"
+            [(ngModel)]="model.otp"
+            [disabled]="view.disableOtp"
             aria-label="otp"
             aria-describedby="basic-addon2"
           />
@@ -264,8 +301,8 @@
             <button
               class="btn btn-outline-secondary"
               type="button"
-              [disabled]="mobile == ''"
-              (click)="validateOtp();showCancel=true">
+              [disabled]="model.mobile == ''"
+              (click)="validateOtp();view.showCancel=true">
               Validate Otp
             </button>
           </div>
@@ -278,14 +315,14 @@
           class="btn btn-success"
           type="button"
 
-          (click)="disableOtp=false;sendOtp()">
+          (click)="view.disableOtp=false;sendOtp()">
          Resent OTP
         </button>
 
         <button
           class="btn btn-warning"
           type="button"
-          *ngIf="showCancel"
+          *ngIf="view.showCancel"
           (click)="cancelLogin();disableMobile=false;disableOtp=true">
          Cancel
         </button>
@@ -298,12 +335,12 @@
         <select
           class="custom-select"
           id="states"
-          [(ngModel)]="selectedState"
+          [(ngModel)]="model.selectedState"
           name="states"
           (change)="onChangeState()"
         >
           <option value="">Select</option>
-          <option *ngFor="let x of stateList" [ngValue]="x.state_id">
+          <option *ngFor="let x of model.stateList" [ngValue]="x.state_id">
             {{ x.state_name }}
           </option>
         </select>
@@ -313,13 +350,13 @@
         Districts :
         <select
           class="custom-select"
-          [(ngModel)]="selectedDistrict"
+          [(ngModel)]="model.selectedDistrict"
           id="district"
           name="districts"
           (change)="getHospitalData();refreshData()"
         >
           <option value="">Select</option>
-          <option *ngFor="let d of districtData" [ngValue]="d.district_id">
+          <option *ngFor="let d of model.districtData" [ngValue]="d.district_id">
             {{ d.district_name }}
           </option>
         </select>
@@ -336,7 +373,7 @@
     </div>
   </form>
   <br>
-  <div class="row" *ngIf="listOfData.length > 0">
+  <div class="row" *ngIf="view.listOfData.length > 0">
     <div class="col-10">
       <table class="table table-striped">
         <thead>
@@ -351,7 +388,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of listOfData; let i = index">
+          <tr *ngFor="let data of view.listOfData; let i = index">
             <th scope="col">{{ i +1}}</th>
             <th scope="col">{{ data.name }}</th>
             <th scope="col">{{ data.price }}</th>
