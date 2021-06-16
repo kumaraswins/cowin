@@ -1,6 +1,5 @@
 <!-- Toolbar -->
 <div class="container-fluid">
-  <!-- <app-toasts></app-toasts> -->
 
   <div *ngIf="view.showLoader">
     {{loaderText}}
@@ -365,7 +364,7 @@
   <br>
   <div class="row" *ngIf="view.listOfData.length > 0">
     <div class="col-10">
-      <app-toasts [listOfData]= view.listOfData></app-toasts>
+      <app-table [listOfData]= view.listOfData></app-table>
     </div>
   </div>
 </div>
