@@ -7,14 +7,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
-import { ToastComponent } from './toast/toast.component';
+import { TableComponent } from './table/table.component';
 import { CowinComponent } from './cowin/cowin.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToastComponent,
+    TableComponent,
     CowinComponent
   ],
 

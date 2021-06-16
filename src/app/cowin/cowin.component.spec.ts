@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NocomponentComponent } from './cowin.component';
+import { CowinComponent } from './cowin.component';
 
-describe('NocomponentComponent', () => {
-  let component: NocomponentComponent;
-  let fixture: ComponentFixture<NocomponentComponent>;
+describe('CowinComponent', () => {
+  let component: CowinComponent;
+  let fixture: ComponentFixture<CowinComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NocomponentComponent ]
+      declarations: [ CowinComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NocomponentComponent);
+    fixture = TestBed.createComponent(CowinComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

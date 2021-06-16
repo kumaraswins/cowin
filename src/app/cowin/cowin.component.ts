@@ -1,7 +1,7 @@
-import { UiHelperService } from '../ui-helper.service';
+import { UiHelperService } from '../service/ui-helper.service';
 import { Component, OnInit } from '@angular/core';
-import { CowinService } from '../cowin.service';
-import {HelperService} from '../helper.service'
+import { CowinService } from '../service/cowin.service';
+import {HelperService} from '../service/helper.service'
 
 
 @Component({
@@ -92,8 +92,6 @@ export class CowinComponent implements OnInit {
   beneficiary(){
     this.model.benificiaryList = [];
     this.api.benificary().subscribe(data => {
-
-
         let benificaries = data['beneficiaries']
         for (let i=0;i < benificaries.length ;i++){
           benificaries[i]['enable'] = true;

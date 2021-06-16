@@ -2,12 +2,12 @@
 import { Component, OnInit, Input  } from '@angular/core';
 
 @Component({
-  selector: 'app-toasts',
-  templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css']
+  selector: 'app-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.css']
 })
 
-export class ToastComponent implements OnInit{
+export class TableComponent implements OnInit{
 
   @Input() listOfData?: any;
 

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable,throwError } from 'rxjs';
-import { HttpClient, HttpResponse,HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
 import {HelperService} from './helper.service'
-import {environment} from '../environments/environment'
-import { CenterList } from './centers';
-import { States, District } from './state';
-//import 'rxjs/add/operator/catch'; // don't forget this, or you'll get a runtime error
+import {environment} from '../../environments/environment'
+import { CenterList } from '../cowin/interface/centers';
+import { States, District } from '../cowin/interface/state';
 
 @Injectable({
   providedIn: 'root'
