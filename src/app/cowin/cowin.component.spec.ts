@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NocomponentComponent } from './nocomponent.component';
+import { NocomponentComponent } from './cowin.component';
 
 describe('NocomponentComponent', () => {
   let component: NocomponentComponent;

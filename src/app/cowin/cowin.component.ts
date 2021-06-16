@@ -1,15 +1,16 @@
 import { UiHelperService } from '../ui-helper.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CowinService } from '../cowin.service';
 import {HelperService} from '../helper.service'
 
+
 @Component({
-  selector: 'app-nocomponent',
-  templateUrl: './nocomponent.component.html',
-  styleUrls: ['./nocomponent.component.css']
+  selector: 'app-cowincomponent',
+  templateUrl: './cowin.component.html',
+  styleUrls: ['./cowin.component.css']
 })
 
-export class NocomponentComponent {
+export class CowinComponent implements OnInit {
   model = this.ui.getModels() // defines the default value
   view = this.ui.getViews()
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {

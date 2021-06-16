@@ -1,5 +1,6 @@
 <!-- Toolbar -->
 <div class="container-fluid">
+  <!-- <app-toasts></app-toasts> -->
 
   <div *ngIf="view.showLoader">
     {{loaderText}}
@@ -19,7 +20,6 @@
       </div>
     </div>
 
-    <h5>Users Preference</h5>
     <hr />
     <!--
         Vaccine Type - Covisheild, covaxin, sputnik, any
@@ -283,7 +283,7 @@
             placeholder="OTP"
             name="otp"
             [(ngModel)]="model.otp"
-            [disabled]="view.disableOtp"
+
             aria-label="otp"
             aria-describedby="basic-addon2"
           />
@@ -304,7 +304,6 @@
       <button
           class="btn btn-success"
           type="button"
-
           (click)="view.disableOtp=false;sendOtp()">
          Resent OTP
         </button>
@@ -318,7 +317,7 @@
         </button>
       </div>
     </div>
-    <br />
+
     <div class="row">
       <div class="col-4">
         States :
@@ -352,6 +351,7 @@
         </select>
       </div>
       <div class="col-4">
+        <br>
         <button
               class="btn btn-secondary"
               type="button"
@@ -365,30 +365,8 @@
   <br>
   <div class="row" *ngIf="view.listOfData.length > 0">
     <div class="col-10">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Vaccine</th>
-            <th scope="col">Date</th>
-            <th scope="col">Dose1</th>
-            <th scope="col">Dose2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of view.listOfData; let i = index">
-            <th scope="col">{{ i +1}}</th>
-            <th scope="col">{{ data.name }}</th>
-            <th scope="col">{{ data.price }}</th>
-            <th scope="col">{{ data.vaccine }}</th>
-            <th scope="col">{{ data.date }}</th>
-            <th scope="col">{{ data.dose1 }}</th>
-            <th scope="col">{{ data.dose2 }}</th>
-          </tr>
-        </tbody>
-      </table>
+      <app-toasts [listOfData]= view.listOfData></app-toasts>
     </div>
   </div>
 </div>
+
