@@ -8,6 +8,37 @@ export class UiHelperService {
 
   constructor() { }
 
+  getModels(){
+    return  {
+      "selectedState" :"",
+      "selectedDistrict":"",
+      "stateList":[],
+      "districtData":[],
+      "benificiaryList":[],
+      "vaccineType":"COVAXIN",
+      "ageGroup":"18",
+      "vaccineFee":"Any",
+      "dose":"dose1",
+      "mobile":"",
+      "otp":"",
+      "availability":"0",
+      "date":new Date(),
+      "txnId":""
+    }
+  }
+  getViews(){
+    return {
+      "listOfData":[],
+      "showCancel" : false,
+      "disableMobile" : false,
+      "disableOtp" : true,
+      "refreshTime"  : 5,
+      "isRefresh" : false,
+      "showLoader" : false,
+      "loaderText" : ""
+    }
+  }
+
   generteData(centers:any,sessions:any,j :number){
     let json:any = {}
     json['name'] =  centers['name']+ centers['block_name'];

@@ -9,36 +9,11 @@ import {HelperService} from './helper.service'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  model = {
-    "selectedState" :"",
-    "selectedDistrict":"",
-    "stateList":[],
-    "districtData":[],
-    "benificiaryList":[],
-    "vaccineType":"COVAXIN",
-    "ageGroup":"18",
-    "vaccineFee":"Any",
-    "dose":"dose1",
-    "mobile":"",
-    "otp":"",
-    "availability":"0",
-    "date":new Date(),
-    "txnId":""
-  }
-  view = {
-    "listOfData":[],
-    "showCancel" : false,
-    "disableMobile" : false,
-    "disableOtp" : true,
-    "refreshTime"  : 5,
-    "isRefresh" : false,
-    "showLoader" : false,
-    "loaderText" : ""
-  }
-
+  model = this.ui.getModels()
+  view = this.ui.getViews()
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
+  }
 
-   }
    /**
     *
     */
@@ -47,29 +22,22 @@ export class AppComponent {
      if (mobile){
       this.model.mobile = mobile;
      }
-
      if(localStorage.getItem("vaccineType")){
         this.model.vaccineType = localStorage.getItem("vaccineType")
       }
-
      if(localStorage.getItem("ageGroup"))
         this.model.ageGroup = localStorage.getItem("ageGroup")
-
-      if(localStorage.getItem("dose"))
+     if(localStorage.getItem("dose"))
         this.model.dose = localStorage.getItem("dose")
    }
   /**
    *
    */
   ngOnInit() {
-
     this.api.getStates()
     .subscribe(data => {
-
       this.model.stateList =  data['states'];
-
     })
-    this.model.vaccineType ="COVAXIN"
     this.loadDefautltData()
   }
   /**

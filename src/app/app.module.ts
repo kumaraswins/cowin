@@ -8,12 +8,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { ToastComponent } from './toast/toast.component';
+import { NocomponentComponent } from './nocomponent/nocomponent.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToastComponent
+    ToastComponent,
+    NocomponentComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,12 @@
+import { NocomponentComponent } from './nocomponent/nocomponent.component';
+import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  //{path: '', component: AppComponent},
+  //{path: '**', component: NocomponentComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
