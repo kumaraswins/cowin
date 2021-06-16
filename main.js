@@ -242,32 +242,8 @@ class AppComponent {
         this.api = api;
         this.helper = helper;
         this.ui = ui;
-        this.model = {
-            "selectedState": "",
-            "selectedDistrict": "",
-            "stateList": [],
-            "districtData": [],
-            "benificiaryList": [],
-            "vaccineType": "COVAXIN",
-            "ageGroup": "18",
-            "vaccineFee": "Any",
-            "dose": "dose1",
-            "mobile": "",
-            "otp": "",
-            "availability": "0",
-            "date": new Date(),
-            "txnId": ""
-        };
-        this.view = {
-            "listOfData": [],
-            "showCancel": false,
-            "disableMobile": false,
-            "disableOtp": true,
-            "refreshTime": 5,
-            "isRefresh": false,
-            "showLoader": false,
-            "loaderText": ""
-        };
+        this.model = this.ui.getModels();
+        this.view = this.ui.getViews();
     }
     /**
      *
@@ -293,7 +269,6 @@ class AppComponent {
             .subscribe(data => {
             this.model.stateList = data['states'];
         });
-        this.model.vaccineType = "COVAXIN";
         this.loadDefautltData();
     }
     /**
@@ -1087,6 +1062,36 @@ __webpack_require__.r(__webpack_exports__);
 
 class UiHelperService {
     constructor() { }
+    getModels() {
+        return {
+            "selectedState": "",
+            "selectedDistrict": "",
+            "stateList": [],
+            "districtData": [],
+            "benificiaryList": [],
+            "vaccineType": "COVAXIN",
+            "ageGroup": "18",
+            "vaccineFee": "Any",
+            "dose": "dose1",
+            "mobile": "",
+            "otp": "",
+            "availability": "0",
+            "date": new Date(),
+            "txnId": ""
+        };
+    }
+    getViews() {
+        return {
+            "listOfData": [],
+            "showCancel": false,
+            "disableMobile": false,
+            "disableOtp": true,
+            "refreshTime": 5,
+            "isRefresh": false,
+            "showLoader": false,
+            "loaderText": ""
+        };
+    }
     generteData(centers, sessions, j) {
         let json = {};
         json['name'] = centers['name'] + centers['block_name'];
@@ -1146,24 +1151,20 @@ UiHelperService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineI
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
-/* harmony import */ var _nocomponent_nocomponent_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nocomponent/nocomponent.component */ "Zxz1");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ "Sy1n");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
-
-
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 
 
 
 const routes = [
-    { path: '', component: _app_component__WEBPACK_IMPORTED_MODULE_1__["AppComponent"] },
-    { path: '404', component: _nocomponent_nocomponent_component__WEBPACK_IMPORTED_MODULE_0__["NocomponentComponent"] }
+//{path: '', component: AppComponent},
+//{path: '**', component: NocomponentComponent}
 ];
 class AppRoutingModule {
 }
-AppRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
-AppRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function AppRoutingModule_Factory(t) { return new (t || AppRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](AppRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]] }); })();
+AppRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
+AppRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function AppRoutingModule_Factory(t) { return new (t || AppRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forRoot(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] }); })();
 
 
 /***/ }),
