@@ -307,7 +307,7 @@
           class="custom-select"
           [(ngModel)]="model.selectedDistrict"
           id="district"
-          [disabled]="model.selectedState == ''"
+          [disabled]="model.selectedState == 0"
           name="districts"
           (change)="getHospitalData();refreshData()"
         >

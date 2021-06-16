@@ -42,6 +42,8 @@ export class CowinComponent implements OnInit {
     this.api.getStates()
     .subscribe(data => {
       this.model.stateList =  data['states'];
+      this.model.selectedState = 31;
+      this.onChangeState()
     })
     this.loadDefautltData()
   }
@@ -54,15 +56,17 @@ export class CowinComponent implements OnInit {
     this.api.getDistricts(this.model.selectedState).subscribe(data => {
 
       this.model.districtData = data['districts'];
+      this.model.selectedDistrict = 571;
+      this.getHospitalData()
 
-      localStorage.setItem("selectedState",this.model.selectedState);
+      //localStorage.setItem("selectedState",this.model.selectedState);
     })
   }
   /**
    *
    * @param value
    */
-  getDistrictsSessions(value:string){
+  getDistrictsSessions(value:number){
     this.api.getDistrictData(value, this.helper.getMMDDYYYY_calendar(this.model.date)).subscribe(data => {
       this.view.listOfData = [];
       //this.ui.generateTable(data,  this.listOfData, this.ageGroup);
@@ -73,7 +77,7 @@ export class CowinComponent implements OnInit {
    *
    */
   refreshData() {
-    localStorage.setItem("selectedDistrict",this.model.selectedDistrict);
+    //localStorage.setItem("selectedDistrict",this.model.selectedDistrict);
      setInterval(() => {
         console.log('setTimeOut');
         //if (this.view.isRefresh)
@@ -107,10 +111,10 @@ export class CowinComponent implements OnInit {
    */
   getHospitalData(): void{
     this.setData()
-    if (this.model.selectedState == '' && this.model.selectedDistrict == '') return;
+    if (this.model.selectedState == 0 && this.model.selectedDistrict == 0) return;
     this.view.isRefresh =true;
     this.api.getDistrictData(this.model.selectedDistrict, this.helper.getMMDDYYYY_calendar(this.model.date)).subscribe(data => {
-      localStorage.setItem("selectedDistrict", this.model.selectedDistrict)
+      //localStorage.setItem("selectedDistrict", this.model.selectedDistrict)
       this.view.listOfData = this.ui.generateTable(data,  this.view.listOfData, this.model.ageGroup, this.model.vaccineType, this.model.vaccineFee, this.model.availability);
       console.log(this.view.listOfData)
     });

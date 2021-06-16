@@ -10,8 +10,8 @@ export class UiHelperService {
 
   getModels(){
     return  {
-      "selectedState" :"",
-      "selectedDistrict":"",
+      "selectedState" :0,
+      "selectedDistrict":0,
       "stateList":[],
       "districtData":[],
       "benificiaryList":[],

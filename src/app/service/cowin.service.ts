@@ -21,7 +21,7 @@ export class CowinService {
 
   constructor(private http: HttpClient, private helperService: HelperService) { }
 
-  getDistrictData(value:string, date:string):  Observable<CenterList>{
+  getDistrictData(value:number, date:string):  Observable<CenterList>{
     let url = '/appointment/sessions/public/calendarByDistrict?district_id='+value+'&date='+ date
     return this.http.get<CenterList>(environment.cowin + url, { headers: this.helperService.getHeaders()})
   }
@@ -47,7 +47,7 @@ export class CowinService {
     return this.http.get<States>(this.STATES)
   }
 
-  getDistricts(id:string):  Observable<District>{
+  getDistricts(id:number):  Observable<District>{
     return this.http.get<District>(this.DISTRICTS+id)
   }
 
