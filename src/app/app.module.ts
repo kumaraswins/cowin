@@ -9,13 +9,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { TableComponent } from './table/table.component';
 import { CowinComponent } from './cowin/cowin.component';
+import { FormComponent } from './form/form.component';
+import { ReactiveComponent } from './reactive/reactive.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
-    CowinComponent
+    CowinComponent,
+    FormComponent,
+    ReactiveComponent
   ],
 
   imports: [
