@@ -1,6 +1,5 @@
 <!-- Toolbar -->
 <div class="container-fluid">
-
   <div *ngIf="view.showLoader">
     {{loaderText}}
     <div class="spinner-border text-secondary" role="status">
@@ -78,42 +77,9 @@
         </div>
       </div>
     </div>
-    <br />
+
     <!-- Availability 0/any-->
-    <div class="row">
-      <div class="col-8">
 
-
-
-        <div class="form-check form-check-inline">
-          <b>Availability</b> &nbsp;
-          <input
-            class="form-check-input"
-            type="radio"
-            name="availability"
-            id="availabilityany"
-            value="0"
-            (click)="getHospitalData()"
-            [(ngModel)]="model.availability"
-          />
-          <label class="form-check-label" for="availability">Any </label>
-        </div>
-
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="availability"
-            id="availabile"
-            value="1"
-            (click)="getHospitalData()"
-            [(ngModel)]="model.availability"
-          />
-          <label class="form-check-label" for="availability">Available </label>
-        </div>
-
-      </div>
-    </div>
 
     <br />
     <!--
@@ -236,6 +202,7 @@
           <input
             class="form-check-input"
             type="date"
+            required
             name="date"
             id="date"
             (change)="getHospitalData()"
@@ -340,6 +307,7 @@
           class="custom-select"
           [(ngModel)]="model.selectedDistrict"
           id="district"
+          [disabled]="model.selectedState == ''"
           name="districts"
           (change)="getHospitalData();refreshData()"
         >
