@@ -1,1 +1,394 @@
-<p>nocomponent works!</p>
+<!-- Toolbar -->
+<div class="container-fluid">
+
+  <div *ngIf="view.showLoader">
+    {{loaderText}}
+    <div class="spinner-border text-secondary" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <form>
+
+    <div class="row">
+      <div class="col-5">
+
+        <div class="form-check"  *ngFor="let beneficiary of model.benificiaryList; let i = index">
+          <input type="checkbox" [checked]="beneficiary.enable" class="form-check-input"  (change)="changeBeneficiiary(beneficiary);beneficiary.enable=!beneficiary.enable">
+          <label class="form-check-label" >{{beneficiary.name}} is {{beneficiary.vaccination_status}}</label>
+        </div>
+      </div>
+    </div>
+
+    <h5>Users Preference</h5>
+    <hr />
+    <!--
+        Vaccine Type - Covisheild, covaxin, sputnik, any
+       -->
+    <div class="row">
+      <div class="col-8">
+        <div class="form-check form-check-inline">
+          <b>Vaccine Type</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="vaccine"
+            id="covaxin"
+            value="COVAXIN"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.vaccineType"
+          />
+          <label class="form-check-label" for="inlineRadio1">COVAXIN</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="vaccine"
+            id="covishield"
+            value="COVISHIELD"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.vaccineType"
+          />
+          <label class="form-check-label" for="inlineRadio2">COVISHIELD</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="vaccine"
+            id="sputnik"
+            value="SPUTNIK"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.vaccineType"
+          />
+          <label class="form-check-label" for="inlineRadio3">SPUTNIK</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="vaccine"
+            id="any"
+            value="any"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.vaccineType"
+          />
+          <label class="form-check-label" for="inlineRadio3">Any </label>
+        </div>
+      </div>
+    </div>
+    <br />
+    <!-- Availability 0/any-->
+    <div class="row">
+      <div class="col-8">
+
+
+
+        <div class="form-check form-check-inline">
+          <b>Availability</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="availability"
+            id="availabilityany"
+            value="0"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.availability"
+          />
+          <label class="form-check-label" for="availability">Any </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="availability"
+            id="availabile"
+            value="1"
+            (click)="getHospitalData()"
+            [(ngModel)]="model.availability"
+          />
+          <label class="form-check-label" for="availability">Available </label>
+        </div>
+
+      </div>
+    </div>
+
+    <br />
+    <!--
+        Age group
+       -->
+    <div class="row">
+      <div class="col-6">
+        <div class="form-check form-check-inline">
+          <b>Age Group</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="age"
+            id="age18"
+            value="18"
+            [(ngModel)]="model.ageGroup"
+            (click)="getHospitalData()"
+          />
+          <label class="form-check-label" for="inlineRadio1">18</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="age"
+            id="age45"
+            value="45"
+            [(ngModel)]="model.ageGroup"
+            (click)="getHospitalData()"
+          />
+          <label class="form-check-label" for="inlineRadio2">45</label>
+        </div>
+      </div>
+    </div>
+    <br />
+    <!--
+        Fee
+       -->
+    <div class="row">
+      <div class="col-6">
+        <div class="form-check form-check-inline">
+          <b>Fee</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="price"
+            id="free"
+            (click)="getHospitalData()"
+            value="Free"
+            [(ngModel)]="model.vaccineFee"
+          />
+          <label class="form-check-label" for="free">Free</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="price"
+            id="paid"
+            (click)="getHospitalData()"
+            value="Paid"
+            [(ngModel)]="model.vaccineFee"
+          />
+          <label class="form-check-label" for="paid">Paid</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="price"
+            id="any"
+            (click)="getHospitalData()"
+            value="Any"
+            [(ngModel)]="model.vaccineFee"
+          />
+          <label class="form-check-label" for="any">Any</label>
+        </div>
+
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-6">
+        <div class="form-check form-check-inline">
+          <b>Dose</b> &nbsp;
+          <input
+            class="form-check-input"
+            type="radio"
+            name="dose"
+            id="dose1"
+            value="dose1"
+            [(ngModel)]="model.dose"
+          />
+          <label class="form-check-label" for="inlineRadio1">Dose1</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="dose"
+            id="dose2"
+            value="dose2"
+            [(ngModel)]="model.dose"
+          />
+          <label class="form-check-label" for="inlineRadio2">Dose2</label>
+        </div>
+      </div>
+    </div>
+    <br />
+
+    <div class="row">
+      <div class="col-6">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label" for="inlineRadio1">Date</label>&nbsp;
+          <input
+            class="form-check-input"
+            type="date"
+            name="date"
+            id="date"
+            (change)="getHospitalData()"
+            [(ngModel)]="model.date"
+          />
+
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-4">
+
+        <div class="input-group mb-3">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Recipient's Mobile"
+            name="mobile"
+            [(ngModel)]="model.mobile"
+            [disabled]="view.disableMobile"
+            aria-label="Phone number"
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              [disabled]="model.mobile == ''"
+              (click)="sendOtp()"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+
+        <div class="input-group mb-3">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="OTP"
+            name="otp"
+            [(ngModel)]="model.otp"
+            [disabled]="view.disableOtp"
+            aria-label="otp"
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              [disabled]="model.mobile == ''"
+              (click)="validateOtp();view.showCancel=true">
+              Validate Otp
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-4">
+      <button
+          class="btn btn-success"
+          type="button"
+
+          (click)="view.disableOtp=false;sendOtp()">
+         Resent OTP
+        </button>
+
+        <button
+          class="btn btn-warning"
+          type="button"
+          *ngIf="view.showCancel"
+          (click)="cancelLogin();disableMobile=false;disableOtp=true">
+         Cancel
+        </button>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-4">
+        States :
+        <select
+          class="custom-select"
+          id="states"
+          [(ngModel)]="model.selectedState"
+          name="states"
+          (change)="onChangeState()"
+        >
+          <option value="">Select</option>
+          <option *ngFor="let x of model.stateList" [ngValue]="x.state_id">
+            {{ x.state_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-4">
+        Districts :
+        <select
+          class="custom-select"
+          [(ngModel)]="model.selectedDistrict"
+          id="district"
+          name="districts"
+          (change)="getHospitalData();refreshData()"
+        >
+          <option value="">Select</option>
+          <option *ngFor="let d of model.districtData" [ngValue]="d.district_id">
+            {{ d.district_name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-4">
+        <button
+              class="btn btn-secondary"
+              type="button"
+              (click)="stopRefresh()">
+              Stop Search
+            </button>
+      </div>
+
+    </div>
+  </form>
+  <br>
+  <div class="row" *ngIf="view.listOfData.length > 0">
+    <div class="col-10">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Vaccine</th>
+            <th scope="col">Date</th>
+            <th scope="col">Dose1</th>
+            <th scope="col">Dose2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of view.listOfData; let i = index">
+            <th scope="col">{{ i +1}}</th>
+            <th scope="col">{{ data.name }}</th>
+            <th scope="col">{{ data.price }}</th>
+            <th scope="col">{{ data.vaccine }}</th>
+            <th scope="col">{{ data.date }}</th>
+            <th scope="col">{{ data.dose1 }}</th>
+            <th scope="col">{{ data.dose2 }}</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,7 @@ import {HelperService} from './helper.service'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  model = this.ui.getModels()
+  model = this.ui.getModels() // defines the default value
   view = this.ui.getViews()
   constructor(  private api:CowinService, private helper:HelperService, private ui:UiHelperService) {
   }
@@ -29,11 +29,14 @@ export class AppComponent {
         this.model.ageGroup = localStorage.getItem("ageGroup")
      if(localStorage.getItem("dose"))
         this.model.dose = localStorage.getItem("dose")
+      let d : Date = new Date();
+      this.model.date = d
    }
   /**
    *
    */
   ngOnInit() {
+
     this.api.getStates()
     .subscribe(data => {
       this.model.stateList =  data['states'];
