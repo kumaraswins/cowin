@@ -1,3 +1,5 @@
+import { Registered } from './../cowin/interface/beneficiary';
+import { Otp, ValidateOtp } from './../cowin/interface/mobile';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
@@ -21,11 +23,21 @@ export class CowinService {
 
   constructor(private http: HttpClient, private helperService: HelperService) { }
 
+  /**
+   *
+   * @param value
+   * @param date
+   * @returns
+   */
   getDistrictData(value:number, date:string):  Observable<CenterList>{
     let url = '/appointment/sessions/public/calendarByDistrict?district_id='+value+'&date='+ date
     return this.http.get<CenterList>(environment.cowin + url, { headers: this.helperService.getHeaders()})
   }
-
+  /**
+   *
+   * @param str
+   * @returns
+   */
    getHash(str:string) {
     let strBuf = new TextEncoder().encode(str);
     return crypto.subtle.digest("SHA-256", strBuf)
@@ -46,28 +58,39 @@ export class CowinService {
   getStates():  Observable<States>{
     return this.http.get<States>(this.STATES)
   }
-
+  /**
+   *
+   * @param id
+   * @returns
+   */
   getDistricts(id:number):  Observable<District>{
     return this.http.get<District>(this.DISTRICTS+id)
   }
-
+  /**
+   *
+   * @param number
+   * @returns
+   */
   getOtp(number:string):  Observable<any>{
-    let json = {}
-    json["mobile"]=  number
-    json['secret'] = this.SECRET
-    return this.http.post( this.SEND_OTP,json)
+    let otp :  Otp = {"mobile":number,"secret":this.SECRET};
+    return this.http.post( this.SEND_OTP,otp)
   }
-
+  /**
+   *
+   * @param otp
+   * @param txn
+   * @returns
+   */
   validateOtp(otp:string, txn:string):  Observable<any>{
-    let json = {}
-    json["otp"]=  otp
-    json['txnId'] = txn
-    return this.http.post( this.VALIDATE_OTP, json)
-
+    let validate : ValidateOtp = {"otp":otp,"txnId":txn};
+    return this.http.post( this.VALIDATE_OTP, validate)
   }
-
-  benificary():  Observable<any>{
-    return this.http.get( this.BENFICIARY)
+  /**
+   *
+   * @returns
+   */
+  benificary():  Observable<Registered>{
+    return this.http.get<Registered>( this.BENFICIARY)
 
   }
 }
