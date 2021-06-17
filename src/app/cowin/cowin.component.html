@@ -309,7 +309,7 @@
           id="district"
           [disabled]="model.selectedState == 0"
           name="districts"
-          (change)="getHospitalData();refreshData()"
+          (change)="getHospitalData();"
         >
           <option value="">Select</option>
           <option *ngFor="let d of model.districtData" [ngValue]="d.district_id">
